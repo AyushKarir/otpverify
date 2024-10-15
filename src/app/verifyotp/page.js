@@ -30,6 +30,7 @@ const VerifyOTP = () => {
                 Phone Number:
                 <input
                     type="text"
+                    className='text-black'
                     value={phoneNumber}
                     onChange={e => setPhoneNumber(e.target.value)}
                 />
@@ -38,6 +39,7 @@ const VerifyOTP = () => {
                 OTP:
                 <input
                     type="text"
+                    className='text-black'
                     value={otp}
                     onChange={e => setOtp(e.target.value)}
                 />
