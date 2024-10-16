@@ -58,7 +58,7 @@ const BenefitsComponent: React.FC = () => {
   ];
 
   return (
-    <section className="flex overflow-hidden flex-col text-base bg-white max-w-[360px] rounded-[32px]">
+    <section className="flex overflow-hidden flex-col text-base bg-white max-w-[360px] rounded-[32px] mx-auto">
       <header className="flex flex-col px-8 pt-20 w-full leading-6 text-white bg-[#4f285e]">
         <img 
           loading="lazy" 

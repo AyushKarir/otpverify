@@ -73,8 +73,8 @@ const StateSelector: React.FC<{ onStateSelect?: (selectedState: string) => void 
 
 const LocationSelector: React.FC = () => {
   return (
-    <div className="flex flex-col max-w-[360px]">
-      <header className="flex flex-col p-8 w-full bg-zinc-700">
+    <div className="flex flex-col max-w-[360px]  bg-[#4f285e] rounded-[32px] mx-auto">
+      <header className=" flex flex-col p-8 w-full bg-[#4f285e] relative z-10 rounded-[32px]">
         <div className="flex gap-10 justify-between items-center w-full max-w-[296px]">
           <div className="flex gap-2 items-start self-stretch px-4 py-2 my-auto w-14 bg-white shadow-lg rounded-[64px]">
             <img loading="lazy" src="/pics/Arrow.png" alt="" className="object-contain w-6 aspect-square" />
@@ -84,7 +84,7 @@ const LocationSelector: React.FC = () => {
           Choose location
         </h1>
       </header>
-      <main className="flex overflow-hidden flex-col flex-1 justify-between items-center pt-8 w-full text-base bg-stone-100 rounded-[32px_32px_32px_32px]">
+      <main className="flex overflow-hidden flex-col flex-1 justify-between items-center pt-8 w-full text-base bg-stone-100 rounded-[32px_32px_32px_32px] ">
         <div className="flex flex-col max-w-full w-[300px] h-[616px]">
           <StateSelector />
           <div className="flex gap-6 items-center mt-8 w-full font-semibold whitespace-nowrap">

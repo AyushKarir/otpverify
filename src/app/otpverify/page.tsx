@@ -1,9 +1,8 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 // OTPInput Component
-const OTPInput: React.FC = () => {
-  const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
+const OTPInput: React.FC<{ otp: string[]; setOtp: React.Dispatch<React.SetStateAction<string[]>> }> = ({ otp, setOtp }) => {
   const inputRefs = useRef<HTMLInputElement[]>([]); // Array of refs for the inputs
 
   const handleInputChange = (
@@ -50,7 +49,7 @@ const OTPInput: React.FC = () => {
             inputRefs.current[index] = el as HTMLInputElement; // Store the ref without returning anything
           }}
           value={digit}
-          className="flex shrink-0 rounded-3xl border border-solid bg-stone-200 border-stone-200 h-[69px] w-[68px] text-center text-2xl text-black" // Added 'text-black'
+          className="flex shrink-0 rounded-3xl border border-solid bg-stone-200 border-stone-200 h-[69px] w-[68px] text-center text-2xl text-black"
           aria-label={`OTP digit ${index + 1}`}
           onChange={(e) => handleInputChange(e, index)}
           onKeyDown={(e) => handleKeyDown(e, index)}
@@ -61,14 +60,20 @@ const OTPInput: React.FC = () => {
 };
 
 // ResendCode Component
-const ResendCode: React.FC<{ timer: string }> = ({ timer }) => {
+const ResendCode: React.FC<{ timer: string; resendOtp: () => void; disableResend: boolean }> = ({ timer, resendOtp, disableResend }) => {
   return (
     <div className="flex gap-3 justify-center items-start mt-4 w-full">
       <div className="flex flex-col min-w-[240px] w-[290px]">
         <p className="text-xs text-stone-500">
           We have sent an OTP to your mobile number
         </p>
-        <p className="text-base text-zinc-700">Resend code in {timer}</p>
+        <p className="text-base text-zinc-700">
+          {disableResend ? `Resend code in ${timer}` : (
+            <button className="text-blue-500" onClick={resendOtp}>
+              Resend OTP
+            </button>
+          )}
+        </p>
       </div>
     </div>
   );
@@ -76,22 +81,27 @@ const ResendCode: React.FC<{ timer: string }> = ({ timer }) => {
 
 // OTPVerification Component
 const OTPVerification: React.FC<{ title: string }> = ({ title }) => {
-  const [otpEntered, setOtpEntered] = useState(false); // To start timer
-  const [timer, setTimer] = useState(180); // Timer set for 3 minutes (in seconds)
+  const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
+  const [otpEntered, setOtpEntered] = useState(false);
+  const [timer, setTimer] = useState(60); // Timer set for 3 minutes (in seconds)
+  const [disableResend, setDisableResend] = useState(true);
 
-  React.useEffect(() => {
+  // Timer countdown
+  useEffect(() => {
+    let countdown: NodeJS.Timeout;
     if (otpEntered) {
-      const countdown = setInterval(() => {
+      countdown = setInterval(() => {
         setTimer((prev) => {
           if (prev <= 1) {
             clearInterval(countdown);
+            setDisableResend(false); // Enable resend when timer hits zero
             return 0;
           }
           return prev - 1;
         });
       }, 1000);
-      return () => clearInterval(countdown); // Clear interval on unmount
     }
+    return () => clearInterval(countdown); // Clear interval on unmount
   }, [otpEntered]);
 
   const formatTime = (seconds: number) => {
@@ -101,11 +111,22 @@ const OTPVerification: React.FC<{ title: string }> = ({ title }) => {
   };
 
   const handleNextClick = () => {
-    setOtpEntered(true); // Start the timer when "Next" button is clicked
+    setOtpEntered(true); // Start the timer
+    setOtp(["", "", "", ""]); // Clear the OTP input
+    setDisableResend(true); // Disable resend until timer runs out
+    setTimer(60); // Reset timer
+  };
+
+  const resendOtp = () => {
+    setOtpEntered(false); // Reset entered state
+    setDisableResend(true); // Disable resend until timer runs out
+    setTimer(60); // Reset timer
+    // Simulate OTP resend (e.g., call API to resend OTP)
+    console.log("Resending OTP to the same number...");
   };
 
   return (
-    <section className="flex flex-col items-center w-full h-screen max-w-[360px] mx-auto">
+    <section className="flex flex-col items-center w-full h-screen max-w-[360px] mx-auto rounded-[32px] bg-[#4f285e]">
       <header className="flex flex-col p-8 w-full bg-[#4f285e] rounded-t-[32px]">
         <div className="flex gap-10 justify-between items-center w-full max-w-[296px]">
           <div className="flex gap-2 items-start self-stretch px-4 py-2 my-auto w-14 bg-white shadow-lg rounded-[64px]">
@@ -121,10 +142,16 @@ const OTPVerification: React.FC<{ title: string }> = ({ title }) => {
           What is the OTP?
         </h1>
       </header>
-      <main className="flex flex-col flex-1 items-center w-full bg-stone-100 px-6 py-8 rounded-b-[32px] h-full">
+      <main className="flex flex-col flex-1 items-center w-full bg-stone-100 px-6 py-8 rounded-[32px] h-full">
         <div className="flex flex-col max-w-full w-[296px]">
-          <OTPInput />
-          {otpEntered && <ResendCode timer={formatTime(timer)} />}
+          <OTPInput otp={otp} setOtp={setOtp} />
+          {otpEntered && (
+            <ResendCode
+              timer={formatTime(timer)}
+              resendOtp={resendOtp}
+              disableResend={disableResend}
+            />
+          )}
           <button
             className="gap-2 self-stretch px-3 py-5 w-full bg-[#4f285e] min-h-[64px] rounded-[32px] mt-6 text-white"
             onClick={handleNextClick}

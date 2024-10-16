@@ -40,15 +40,15 @@ const LanguagePreference: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col max-w-[360px]">
-      <header className="flex flex-col p-8 w-full bg-[#4f285e] max-sm:mr-0">
+    <div className="flex flex-col mx-auto items-center justify-center w-[357px] h-[800px] rounded-[32px_32px_32px_32px] bg-[#4f285e] ">
+      <header className="flex flex-col p-8 w-full max-sm:mr-0">
         <h1 className="mt-8 text-3xl font-medium leading-10 text-white">
           Which language do you prefer?
         </h1>
       </header>
 
-      <main className="flex overflow-hidden flex-col flex-1 justify-between items-center pt-8 w-full text-base bg-stone-100 rounded-[32px_32px_0px_0px] max-sm:mb-1">
-        <section className="flex flex-col max-w-full text-neutral-600 w-[296px]">
+      <main className="flex overflow-hidden flex-col flex-1 justify-between items-center pt-8 w-full text-base bg-stone-100 rounded-[32px] max-sm:mb-1">
+        <section className="flex flex-col max-w-full text-neutral-600 w-[296px] rounder-[32px]">
           {loginOptions.map((option, index) => (
             <LoginOption
               key={index}

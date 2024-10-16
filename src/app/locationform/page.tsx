@@ -56,9 +56,9 @@ const LocationForm: React.FC = () => {
   };
 
   return (
-    <main className="flex overflow-hidden flex-col justify-center bg-zinc-700 max-w-[360px] rounded-[32px]">
+    <main className="flex overflow-hidden flex-col justify-center  max-w-[360px] rounded-[32px] bg-[#4f285e] mx-auto">
       <div className="flex flex-col w-full min-h-[800px] relative">
-        <header className="flex flex-col p-8 w-full bg-zinc-700">
+        <header className="flex flex-col p-8 w-full bg-[#4f285e]">
           <div className="flex gap-10 justify-between items-center w-full max-w-[296px]">
             <button className="flex gap-2 items-start self-stretch px-4 py-2 my-auto w-14 bg-white shadow-lg rounded-[64px]">
               <img loading="lazy" src="/pics/Arrow.png" className="object-contain w-6 aspect-square" alt="" />

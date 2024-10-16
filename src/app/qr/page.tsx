@@ -1,36 +1,40 @@
-"use client"
+"use client";
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'; // Import useRouter for navigation
 
 const QRLoginComponent: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const router = useRouter(); // Initialize the router
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedImage(file);
-      // You can add any further processing for the file here
       console.log('Selected file:', file);
     }
   };
 
   const handleUploadClick = () => {
     if (selectedImage) {
-      // Handle the file upload, e.g., send it to a server
       console.log('Uploading file:', selectedImage);
     } else {
       console.log('No file selected');
     }
   };
 
+  const handleUsePhoneNumberClick = () => {
+    router.push('/mobileinput'); // Navigate to the mobile input page
+  };
+
   return (
-    <main className="flex overflow-hidden flex-col justify-center bg-rose-100 max-w-[360px] rounded-[32px] mx-auto pt-44">
+    <main className="flex overflow-hidden flex-col justify-center bg-rose-100 max-w-[360px] rounded-[32px] mx-auto">
       <div className="flex flex-col w-full min-h-[696px]">
         <header className="flex gap-10 justify-between items-center px-8 py-9 w-full bg-rose-100 min-h-[93px]">
           <img loading="lazy" src="/pics/Arrow.png" alt="" className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square" />
           <img loading="lazy" src="/pics/Torch.png" alt="" className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square" />
         </header>
 
-        <section className="flex flex-col items-center p-2.5 w-full bg-rose-100 min-h-[476px] max-sm:mr-9">
+        <section className="flex flex-col items-center p-2.5 w-full bg-rose-100 min-h-[550px] max-sm:mr-9">
           <h2 className="text-base font-semibold leading-6 text-center text-zinc-700">
             Scan QR from Yojana Card to login
           </h2>
@@ -56,7 +60,7 @@ const QRLoginComponent: React.FC = () => {
             <div className="flex-1 shrink self-stretch my-auto h-px border border-solid basis-0 bg-neutral-200 border-neutral-200 w-[104px]" />
           </div>
 
-          <button className="gap-2 self-center px-3 py-5 mt-2.5 max-w-full text-white bg-[#4f285e] min-h-[64px] rounded-[32px] w-[296px]" onClick={handleUploadClick}>
+          <button className="gap-2 self-center px-3 py-5 mt-2.5 max-w-full text-white bg-[#4f285e] min-h-[64px] rounded-[32px] w-[296px]" onClick={handleUsePhoneNumberClick}>
             {'Use Phone Number'}
           </button>
         </section>

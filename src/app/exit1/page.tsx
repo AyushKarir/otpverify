@@ -11,13 +11,13 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ logoSrc, welcomeText }) => {
   return (
-    <header className="flex flex-col items-center px-20 pt-72 w-full text-xl font-medium leading-tight bg-zinc-700">
+    <header className="flex flex-col items-center px-20 pt-72 w-full text-xl font-medium leading-tight bg-[#4f285e]">
       <h1>{welcomeText}</h1>
       <img 
         loading="lazy" 
         src={logoSrc} 
         alt="Company logo" 
-        className="object-contain z-10 mt-3.5 mb-0 aspect-[1.9] w-[209px]" 
+        className="object-contain z-10 mt-3.5 mb-0 aspect-[1.9] w-[209px] bg-[#4f285e]" 
       />
     </header>
   );
@@ -64,7 +64,7 @@ const Page: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/exit'); // Redirect to the exit page
-    }, 3000); // 3000 milliseconds = 3 seconds
+    }, 300000); // 3000 milliseconds = 3 seconds
 
     // Cleanup function to clear the timer if the component unmounts
     return () => clearTimeout(timer);

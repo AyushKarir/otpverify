@@ -67,18 +67,12 @@ const MobileNumberInput: React.FC<MobileNumberInputProps> = ({ previousPage }) =
 
   const handleNextClick = () => {
     console.log(`Navigating from: ${previousPage}`);
-    if (previousPage === 'locationform') {
-      router.push('/verification');
-    } else if (previousPage === 'login') {
-      router.push('/otpinput');
-    } else {
-      console.error('Unknown previous page');
-    }
+    router.push('/otpverify');
   };
 
   return (
-    <main className="flex overflow-hidden flex-col justify-center bg-zinc-700 max-w-[360px] rounded-[32px]">
-      <div className="flex flex-col w-full min-h-[800px]">
+    <main className="flex overflow-hidden flex-col justify-center  max-w-[360px] rounded-[32px] mx-auto">
+      <div className="flex flex-col w-full min-h-[800px] bg-[#4f285e]">
         <header className="flex flex-col p-8 w-full bg-[#4f285e] max-sm:mr-0">
           <div className="flex gap-10 justify-between items-center w-full max-w-[296px]">
             <IconButton icon="/pics/Arrow.png" alt="Back" />
