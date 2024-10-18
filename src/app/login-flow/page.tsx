@@ -7,12 +7,12 @@ import QRLoginComponent from '@/components/QRLogin/QRLoginComponent';
 import BenefitsComponent from '@/components/Exit/exit';
 import LocationSelector from '@/components/LocationSelector/LocationSelector';
 import MobileNumberInput from '@/components/MobileNumberInput/MobileNumberInput';
-import VerificationFlow from '@/components/VerificationFlow/VerificationFlow';
+import VerificationFlow from '/VerificationFlow';
 
 
 export default function LoginFlowPage() {
- return ( <div>
+  return (<div>
     <VerificationFlow />
   </div>
- );
+  );
 }

@@ -13,12 +13,12 @@ app.use(bodyparser.json());
 app.use(cors());
 
 const accountSID = "ACa1bd209224e597e1840b1dd9a132797f";
-const authToken = "43d141d075400d7504aaffb0a6644cba";
+const authToken = "de3e56c96c5fb5dbcd7eeb60ba96be74";
 const client = new twilio(accountSID, authToken);
 
 // Function to generate a random 6-digit OTP
 const generateOtp = () => {
-    return Math.floor(100000 + Math.random() * 900000);
+    return Math.floor(1000 + Math.random() * 9000);
 };
 
 // API endpoint to initiate OTP generation and send to user's phone
@@ -53,17 +53,25 @@ app.post("/send-otp", async (req, res) => {
 app.post("/verify-otp", async (req, res) => {
     const { phoneNumber, userOTP } = req.body;
 
+    console.log("Received phoneNumber:", phoneNumber);  // Debug: Log input
+    console.log("Received userOTP:", userOTP);          // Debug: Log input
+
     try {
         // Retrieve OTP from the database using Prisma
         const otpRecord = await prisma.otp.findFirst({
-            where: { phoneNumber: phoneNumber, otp: userOTP },
+            where: {
+                phoneNumber: phoneNumber.trim(), // Remove any leading/trailing spaces
+                otp: userOTP.trim(),             // Remove any leading/trailing spaces
+            },
         });
+
+        console.log("OTP Record:", otpRecord);  // Debug: Log the record
 
         if (otpRecord) {
             // Create a new user in the database with Prisma after OTP verification
             const newUser = await prisma.user.create({
                 data: {
-                    phone: phoneNumber,
+                    phone: phoneNumber.trim(),
                     name: "New User", // Set name or other details as required
                     district: "Unknown", // Set as needed
                     state: "Unknown",    // Set as needed
@@ -74,13 +82,39 @@ app.post("/verify-otp", async (req, res) => {
 
             res.send({ success: true, user: newUser });
         } else {
+            console.log("Invalid OTP or phone number."); // Debug: Add more information
             res.status(401).send({ success: false, error: "Invalid OTP" });
         }
     } catch (error) {
-        console.error(error);
+        console.error("Error during OTP verification:", error); // Debug: Log full error
         res.status(500).send({ success: false, error: "Error verifying OTP" });
     }
 });
+
+app.post("/save-location", async (req, res) => {
+    const { state, district, pincode } = req.body;
+
+    console.log('Received Data:', req.body); // Log incoming data
+
+    try {
+        const newUser = await prisma.user.create({
+            data: {
+                state: state,
+                district: district,
+                pincode: pincode,
+                name: "",
+                isVerified: true,
+            },
+        });
+
+        res.send({ success: true, user: newUser });
+    } catch (error) {
+        console.error("Error saving location details:", error); // Log detailed error
+        res.status(500).send({ success: false, error: "Failed to save location details" });
+    }
+});
+
+
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
